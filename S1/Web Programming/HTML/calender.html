@@ -1,0 +1,58 @@
+<html>
+<head>
+ <title>Calender</title>
+ <style>
+  table{
+   width:80%;
+   border-collapse:collapse;
+   margin: 0 auto;
+  }
+  th,td{
+   border:3px solid black;
+   padding:15px;
+   text-align:center;
+   font-size:16px;
+  }
+  th{
+   background-color: #f2f2f2;
+  }
+ </style>
+</head>
+<body>
+ <h3>Enter year to genrate calender: </h3>
+ <input type="number" id="yearInput">
+ <button onclick="genrateCalender()">Genrate Calender</button>
+ <h2 id="calenderYear">Calender for <span id="displayYear"></span></h2>
+ <div id="calender"></div>
+</body>
+<script>
+ function genrateCalender(){
+    let year=document.getElementById("yearInput").value;
+    let calenderHeading=document.getElementById("calenderYear");
+    calenderHeading.textContent="Calender for "+year;
+    let calender="<table>";
+    for(let month=0;month<12;month++){
+       calender+="<tr><th colspan='7'>"+getMonthName(month)+"</th></tr>";
+       calender+="<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>";
+       let dayInMonth=new Date(year,month+1,0).getDate();
+       let firstDay=new Date(year,month,1).getDay();
+       for(let i=0;i<firstDay;i++){
+           calender+="<td></td>"
+       }
+       for(let day=1;day<=dayInMonth;day++){
+           calender+="<td>"+day+"</td>"
+           if(new Date(year,month,day).getDay()===6){
+             calender+="</tr><tr>";
+           }
+     }
+    calender+="</tr>";  
+    }   
+       calender+="</table>"
+       document.getElementById("calender").innerHTML=calender;
+ }
+ function getMonthName(index){
+    let monthName=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    return monthName[index];
+ }
+</script>
+</html>

@@ -1,0 +1,11 @@
+.hover-content{
+ display:none;
+ text-align:center:
+ margin-top:20px;
+}
+
+.hovered:hover + .hover-content{
+ color:blue;
+ display: block;
+ cursor:pointer;
+}

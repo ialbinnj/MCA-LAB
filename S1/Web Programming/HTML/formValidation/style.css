@@ -1,0 +1,33 @@
+.emsg{
+ color:red;
+}
+
+.container{
+ display:flex;
+ justify-content:center;
+ align-items:center:
+ height:100vh;
+}
+
+.form-container{
+ text-align:left;
+ padding:20px;
+ border:1px solid #ccc;
+ box-shadow:0 4px 8px rgba(0,0,0,0.1);
+ border-radius:5px;
+}
+
+.form-container label,
+.form-container input{
+ display:block;
+ margin-bottom:10px;
+}
+
+.form-container button{
+ background-color:#4caf50;
+ color:#fff;
+ padding:10px 20px;
+ border:none;
+ border-radius:3px;
+ cursor:pointer;
+}
