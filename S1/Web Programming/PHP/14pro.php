@@ -59,27 +59,46 @@
     <div id="emsg" class="emsg"></div>
    </div>
    </div>
+ 
 </body>
 </html>
+  <?php
+    // getting all values from the HTML form
+    if($_POST)
+    {
+        $firstName = $_POST['first_name'];
+        $lastName = $_POST['last_name'];
+        $age = $_POST['age'];
+        $subject = $_POST['subject'];
+    }
 
-<?php
- $con = mysqli_connect('localhost', 'root', '','albin');
- 
- // get the post records
- $firstName = $_POST['first_name'];
- $lastName = $_POST['last_name'];
- $age = $_POST['age'];
- $subject = $_POST['subject'];
- 
- if($firstName and $lastName and $age and
- if($_POST){
-   $sql = "INSERT INTO `stdform` ( `first_name`, `last_name`, `age`, `subject`) VALUES ( '$firstName', '$lastName', '$age', '$subject')";
- 
-   $rs = mysqli_query($con, $sql);
-   if($rs)
-   {
-	echo "Records Inserted";
-  }else{
-      die "Connection failed";
-  }
+    // database details
+    $host = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "albin";
+
+    // creating a connection
+    $con = mysqli_connect($host, $username, $password, $dbname);
+
+    // to ensure that the connection is made
+    if (!$con)
+    {
+        die("Connection failed!" . mysqli_connect_error());
+    }
+
+    // using sql to create a data entry query
+    $sql = "INSERT INTO `stdform` (`firstname`, `lastname`, `age`, `subject`) VALUES ('$firstName', '$lastName', '$age', '$subject')";
+
+  
+    // send query to the database to add values and confirm if successful
+    $rs = mysqli_query($con, $sql);
+    if($rs)
+    {
+        echo "Entries added!";
+    }
+  
+    // close connection
+    mysqli_close($con);
+
 ?>
