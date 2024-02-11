@@ -1,0 +1,159 @@
+
+mysql> create table employee(EMP_ID int,Name varchar(50),Department int,SALARY int);
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> create table department(DEP_ID int,Department_name varchar(50),HeadofDepartment varchar(50));
+Query OK, 0 rows affected (0.37 sec)
+
+mysql> insert into employee values(001,'Albin',1,40000);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into employee values(002,'Deed',2,30000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into department values(1,'HR','Adith');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into department values(2,'Design','Binoj');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from employee;
++--------+--------+------------+--------+
+| EMP_ID | Name   | Department | SALARY |
++--------+--------+------------+--------+
+|      1 | Albin  |          1 |  40000 |
+|      2 | Deed   |          2 |  30000 |
++--------+--------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from department;
++--------+-----------------+------------------+
+| DEP_ID | Department_name | HeadofDepartment |
++--------+-----------------+------------------+
+|      1 | HR              | Adith            |
+|      2 | Design          | Binoj            |
++--------+-----------------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table department add primary key(DEP_ID);
+Query OK, 0 rows affected (0.81 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee add primary key(EMP_ID);
+Query OK, 0 rows affected (0.69 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| EMP_ID     | int(11)     | NO   | PRI | NULL    |       |
+| Name       | varchar(50) | YES  |     | NULL    |       |
+| Department | int(11)     | YES  |     | NULL    |       |
+| SALARY     | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc department;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| DEP_ID           | int(11)     | NO   | PRI | NULL    |       |
+| Department_name  | varchar(50) | YES  |     | NULL    |       |
+| HeadofDepartment | varchar(50) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table employee add foreign key(Department) references department(DEP_ID);
+Query OK, 2 rows affected (1.18 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc department;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| DEP_ID           | int(11)     | NO   | PRI | NULL    |       |
+| Department_name  | varchar(50) | YES  |     | NULL    |       |
+| HeadofDepartment | varchar(50) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| EMP_ID     | int(11)     | NO   | PRI | NULL    |       |
+| Name       | varchar(50) | YES  |     | NULL    |       |
+| Department | int(11)     | YES  | MUL | NULL    |       |
+| SALARY     | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> select * from employee;
++--------+--------+------------+--------+
+| EMP_ID | Name   | Department | SALARY |
++--------+--------+------------+--------+
+|      1 | Albin  |          1 |  40000 |
+|      2 | Deed   |          2 |  30000 |
++--------+--------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from department;
++--------+-----------------+------------------+
+| DEP_ID | Department_name | HeadofDepartment |
++--------+-----------------+------------------+
+|      1 | HR              | Adith            |
+|      2 | Design          | Binoj            |
++--------+-----------------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> update department set HeadofDepartment='Joy'where DEP_ID=1;
+Query OK, 1 row affected (0.16 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from department;
++--------+-----------------+------------------+
+| DEP_ID | Department_name | HeadofDepartment |
++--------+-----------------+------------------+
+|      1 | HR              | Joy              |
+|      2 | Design          | Binoj            |
++--------+-----------------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> update employee set Name='Suma'where EMP_ID=1;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++--------+-------+------------+--------+
+| EMP_ID | Name  | Department | SALARY |
++--------+-------+------------+--------+
+|      1 | Suma  |          1 |  40000 |
+|      2 | Deed  |          2 |  30000 |
++--------+-------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> delete from employee where EMP_ID=1;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from employee;
++--------+------+------------+--------+
+| EMP_ID | Name | Department | SALARY |
++--------+------+------------+--------+
+|      2 | Deed |          2 |  30000 |
++--------+------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> delete from department where DEP_ID=1;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from department;
++--------+-----------------+------------------+
+| DEP_ID | Department_name | HeadofDepartment |
++--------+-----------------+------------------+
+|      2 | Design          | Binoy            |
++--------+-----------------+------------------+
+1 row in set (0.00 sec)
+
+mysql> 
+
