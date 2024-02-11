@@ -1,0 +1,126 @@
+mysql> create database employee;
+Query OK, 1 row affected (1.39 sec)
+
+mysql> use employee;
+Database changed
+
+mysql> create table emp(emp_id int primary key,emp_name text not null,
+emp_addrs text not null,emp_phone int not null,dep_name text not null,salary int not null);
+Query OK, 0 rows affected (1.04 sec)
+
+mysql> insert into emp values(1,'ramesh','Gnoida','1234567890',001,'sales','75000'),(2,'suresh',
+'Gnoida','12345790',002,'sales','85000'),(3,'siya','Gnoida','123456790',003,'sales','25000'),(4,
+'riya','bsb','123453790',004,'sales','28000'),(5,'diya','bsb','4553453790',005,'sales','38000');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from employee;
++--------+----------+-----------+------------+---------+----------+--------+
+| emp_id | emp_name | emp_addrs | emp_phone  | dept_id | dep_name | salary |
++--------+----------+-----------+------------+---------+----------+--------+
+|      1 | ramesh   | Gnoida    | 12345678   | 1       | sales    | 75000  |
+|      2 | suresh   | Gnoida    | 12345790   | 2       | sales    | 85000  |
+|      3 | siya     | Gnoida    | 12345679   | 3       | sales    | 25000  |
+|      4 | riya     | bsb       | 12345379   | 4       | sales    | 28000  |
+|      5 | diya     | bsb       | 45534537   | 5       | sales    | 38000  |
++--------+----------+-----------+------------+---------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> create user 'xyz' identified by 'all';
+Query OK, 0 rows affected (0.61 sec)
+
+mysql> show grants for xyz;
++---------------------------------+
+| Grants for xyz@%                |
++---------------------------------+
+| GRANT USAGE ON *.* TO 'xyz'@'%' |
++---------------------------------+
+1 row in set (0.00 sec)
+
+mysql> grant all on employee to xyz;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show grants for xyz;
++------------------------------------------------------------+
+| Grants for xyz@%                                           |
++------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'xyz'@'%'                            |
+| GRANT ALL PRIVILEGES ON `employee`.`employee` TO 'xyz'@'%' |
++------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> grant all on emp to xyz;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> quit;
+Bye
+
+lab2@lab2-OptiPlex-380:~$ mysql -u xyz -p
+Enter password: 
+
+mysql> use employee;
+
+Database changed
+mysql> select * from emp;
++--------+----------+-----------+------------+---------+----------+--------+
+| emp_id | emp_name | emp_addrs | emp_phone  | dept_id | dep_name | salary |
++--------+----------+-----------+------------+---------+----------+--------+
+|      1 | ramesh   | Gnoida    | 12345678   | 1       | sales    | 75000  |
+|      2 | suresh   | Gnoida    | 12345790   | 2       | sales    | 85000  |
+|      3 | siya     | Gnoida    | 12345679   | 3       | sales    | 25000  |
+|      4 | riya     | bsb       | 12345379   | 4       | sales    | 28000  |
+|      5 | diya     | bsb       | 45534537   | 5       | sales    | 38000  |
++--------+----------+-----------+------------+---------+----------+--------+
+5 rows in set (0.03 sec)
+
+mysql> update emp set emp_name='sonu'where emp_id=5;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emp;
++--------+----------+-----------+------------+---------+----------+--------+
+| emp_id | emp_name | emp_addrs | emp_phone  | dept_id | dep_name | salary |
++--------+----------+-----------+------------+---------+----------+--------+
+|      1 | ramesh   | Gnoida    | 12345678   | 1       | sales    | 75000  |
+|      2 | suresh   | Gnoida    | 12345790   | 2       | sales    | 85000  |
+|      3 | siya     | Gnoida    | 12345679   | 3       | sales    | 25000  |
+|      4 | riya     | bsb       | 12345379   | 4       | sales    | 28000  |
+|      5 | sonu     | bsb       | 45534537   | 5       | sales    | 38000  |
++--------+----------+-----------+------------+---------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> quit
+Bye
+
+lab2@lab2-OptiPlex-380:~$ mysql -u root -p
+Enter password: 
+
+mysql> use employee;
+
+Database changed
+mysql> revoke all on employee from xyz;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> revoke all on emp from xyz;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show grants for xyz;
++---------------------------------+
+| Grants for xyz@%                |
++---------------------------------+
+| GRANT USAGE ON *.* TO 'xyz'@'%' |
++---------------------------------+
+1 row in set (0.00 sec)
+
+mysql> quit
+Bye
+
+lab2@lab2-OptiPlex-380:~$ mysql -u xyz -p
+Enter password: 
+
+mysql> use employee;
+
+ERROR 1044 (42000): Access denied for user 'xyz'@'%' to database 'employee'
+mysql> 
+
+
+
