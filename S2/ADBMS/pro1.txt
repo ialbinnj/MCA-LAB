@@ -1,0 +1,92 @@
+mysql> create database albindb;
+Query OK, 1 row affected (0.54 sec)
+
+mysql> use db;
+Database changed
+
+mysql> create table student(rollno int PRIMARY KEY,Name varchar(20),Age int,course varchar(50),year int);
+Query OK, 0 rows affected (0.68 sec)
+
+mysql> desc student;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| rollno | int(11)     | NO   | PRI | NULL    |       |
+| Name   | varchar(20) | YES  |     | NULL    |       |
+| Age    | int(11)     | YES  |     | NULL    |       |
+| course | varchar(50) | YES  |     | NULL    |       |
+| year   | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.08 sec)
+
+mysql> alter table student add mark int;
+Query OK, 0 rows affected (0.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| rollno | int(11)     | NO   | PRI | NULL    |       |
+| Name   | varchar(20) | YES  |     | NULL    |       |
+| Age    | int(11)     | YES  |     | NULL    |       |
+| course | varchar(50) | YES  |     | NULL    |       |
+| year   | int(11)     | YES  |     | NULL    |       |
+| mark   | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table student drop column mark;
+Query OK, 0 rows affected (0.54 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| rollno | int(11)     | NO   | PRI | NULL    |       |
+| Name   | varchar(20) | YES  |     | NULL    |       |
+| Age    | int(11)     | YES  |     | NULL    |       |
+| course | varchar(50) | YES  |     | NULL    |       |
+| year   | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> alter table student change year totalyear int;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| rollno    | int(11)     | NO   | PRI | NULL    |       |
+| Name      | varchar(20) | YES  |     | NULL    |       |
+| Age       | int(11)     | YES  |     | NULL    |       |
+| course    | varchar(50) | YES  |     | NULL    |       |
+| totalyear | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> insert into student values(1,'Megha',21,'MCA',2023);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into student values(2,'ASHISH',21,'MBA',2024);
+Query OK, 1 row affected (0.04 sec)
+
+
+mysql> truncate table student;
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> rename database albindb to albinbd;
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> drop albinbd;
+Query OK, 0 rows affected (0.25 sec)
+
+
+
