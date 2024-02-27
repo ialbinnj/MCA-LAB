@@ -1,0 +1,83 @@
+lab2@lab2-OptiPlex-390:~$ mysql -u root -p
+Enter password: 
+mysql> create table student(rollno int,name varchar(20),course varchar(20));
+Query OK, 0 rows affected (0.72 sec)
+
+mysql> insert into student values(1,"Ammu","MCA"),(2,"Amal","MCA"),(3,"Anet","MCA");
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from student;
++--------+------+--------+
+| rollno | name | course |
++--------+------+--------+
+|      1 | Ammu | MCA    |
+|      2 | Amal | MCA    |
+|      3 | Anet | MCA    |
++--------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> savepoint a;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into student values(4,"Albin","MCA");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++--------+-------+--------+
+| rollno | name  | course |
++--------+-------+--------+
+|      1 | Ammu  | MCA    |
+|      2 | Amal  | MCA    |
+|      3 | Anet  | MCA    |
+|      4 | Albin | MCA    |
++--------+-------+--------+
+4 rows in set (0.00 sec)
+
+mysql> rollback to a;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from student;
++--------+------+--------+
+| rollno | name | course |
++--------+------+--------+
+|      1 | Ammu | MCA    |
+|      2 | Amal | MCA    |
+|      3 | Anet | MCA    |
++--------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into student values(5,"Arun","MCA");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from student;
++--------+------+--------+
+| rollno | name | course |
++--------+------+--------+
+|      1 | Ammu | MCA    |
+|      2 | Amal | MCA    |
+|      3 | Anet | MCA    |
+|      5 | Arun | MCA    |
++--------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from student;
++--------+------+--------+
+| rollno | name | course |
++--------+------+--------+
+|      1 | Ammu | MCA    |
+|      2 | Amal | MCA    |
+|      3 | Anet | MCA    |
+|      5 | Arun | MCA    |
++--------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> 
