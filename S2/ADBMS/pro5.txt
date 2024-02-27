@@ -1,0 +1,132 @@
+1) mysql> create table employee(empId int,empName varchar(50),empGender varchar(13),empDep varchar(50),empEdu varchar(50),MOJ varchar(50),empSalary int);
+Query OK, 0 rows affected (0.37 sec)
+
+mysql> desc employee;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| empId     | int(11)     | YES  |     | NULL    |       |
+| empName   | varchar(50) | YES  |     | NULL    |       |
+| empGender | varchar(13) | YES  |     | NULL    |       |
+| empDep    | varchar(50) | YES  |     | NULL    |       |
+| empEdu    | varchar(50) | YES  |     | NULL    |       |
+| MOJ       | varchar(50) | YES  |     | NULL    |       |
+| empSalary | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.02 sec)
+
+mysql> insert into employee values(1001,"Ajay","M","Engineering","Doctoral","January",25),(1002,"Babloo","M","Engineering","UG","February",23),(1003,"Chhavi","F","HR","PG","March",15),(1004,"Evina","F","Marketing","UG","March",16);
+Query OK, 4 rows affected (0.07 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------+---------+-----------+-------------+----------+----------+-----------+
+| empId | empName | empGender | empDep      | empEdu   | MOJ      | empSalary |
++-------+---------+-----------+-------------+----------+----------+-----------+
+|  1001 | Ajay    | M         | Engineering | Doctoral | January  |        25 |
+|  1002 | Babloo  | M         | Engineering | UG       | February |        23 |
+|  1003 | Chhavi  | F         | HR          | PG       | March    |        15 |
+|  1004 | Evina   | F         | Marketing   | UG       | March    |        16 |
++-------+---------+-----------+-------------+----------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select empDep,SUM(empSalary)from employee group by empDep;
++-------------+----------------+
+| empDep      | SUM(empSalary) |
++-------------+----------------+
+| Engineering |             48 |
+| HR          |             15 |
+| Marketing   |             16 |
++-------------+----------------+
+3 rows in set (0.05 sec)
+
+mysql> select empDep,SUM(empSalary)from employee group by empDep having sum(empSalary)>=20;
++-------------+----------------+
+| empDep      | SUM(empSalary) |
++-------------+----------------+
+| Engineering |             48 |
++-------------+----------------+
+1 row in set (0.01 sec)
+
+mysql> select distinct empDep from employee;
++-------------+
+| empDep      |
++-------------+
+| Engineering |
+| HR          |
+| Marketing   |
++-------------+
+3 rows in set (0.00 sec)
+
+mysql> select count(empSalary) from employee;
++------------------+
+| count(empSalary) |
++------------------+
+|                4 |
++------------------+
+1 row in set (0.02 sec)
+
+mysql> select COUNT(empSalary) from employee;
++------------------+
+| COUNT(empSalary) |
++------------------+
+|                4 |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where empDep="Engineering" and empEdu="Doctoral";
++-------+---------+-----------+-------------+----------+---------+-----------+
+| empId | empName | empGender | empDep      | empEdu   | MOJ     | empSalary |
++-------+---------+-----------+-------------+----------+---------+-----------+
+|  1001 | Ajay    | M         | Engineering | Doctoral | January |        25 |
++-------+---------+-----------+-------------+----------+---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where empDep="Engineering" or empEdu="Doctoral";
++-------+---------+-----------+-------------+----------+----------+-----------+
+| empId | empName | empGender | empDep      | empEdu   | MOJ      | empSalary |
++-------+---------+-----------+-------------+----------+----------+-----------+
+|  1001 | Ajay    | M         | Engineering | Doctoral | January  |        25 |
+|  1002 | Babloo  | M         | Engineering | UG       | February |        23 |
++-------+---------+-----------+-------------+----------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select empName as First_Name,empEdu as Qualification from employee;
++------------+---------------+
+| First_Name | Qualification |
++------------+---------------+
+| Ajay       | Doctoral      |
+| Babloo     | UG            |
+| Chhavi     | PG            |
+| Evina      | UG            |
++------------+---------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from employee where empName like 'A%';
++-------+---------+-----------+-------------+----------+---------+-----------+
+| empId | empName | empGender | empDep      | empEdu   | MOJ     | empSalary |
++-------+---------+-----------+-------------+----------+---------+-----------+
+|  1001 | Ajay    | M         | Engineering | Doctoral | January |        25 |
++-------+---------+-----------+-------------+----------+---------+-----------+
+1 row in set (0.00 sec)
+
+2) mysql> select empDep,sum(empSalary) from employee where empEdu <>"UG" group by empDep having sum(empSalary)>=20;
++-------------+----------------+
+| empDep      | sum(empSalary) |
++-------------+----------------+
+| Engineering |             25 |
++-------------+----------------+
+1 row in set (0.00 sec)
+
+3) mysql> select empDep,sum(empSalary) from employee group by empDep having sum(empSalary)>=15 order by sum(empSalary) desc;
++-------------+----------------+
+| empDep      | sum(empSalary) |
++-------------+----------------+
+| Engineering |             48 |
+| Marketing   |             16 |
+| HR          |             15 |
++-------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+
