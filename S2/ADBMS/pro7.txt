@@ -1,0 +1,59 @@
+mysql> create table employees(empId int,empName varchar(50),empAge int,empCity varchar(50),empIncome float);
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> desc employees;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| empId     | int(11)     | YES  |     | NULL    |       |
+| empName   | varchar(50) | YES  |     | NULL    |       |
+| empAge    | int(11)     | YES  |     | NULL    |       |
+| empCity   | varchar(50) | YES  |     | NULL    |       |
+| empIncome | float       | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> insert into employees value(101,"Peter",32,"NewYork",200000),(102,"Mark",32,"California",300000),(103,"Donald",40,"Arizone",1000000),(104,"Obama",35,"Florida",5000000),(105,"Linklon",32,"Georgia",250000);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++-------+---------+--------+------------+-----------+
+| empId | empName | empAge | empCity    | empIncome |
++-------+---------+--------+------------+-----------+
+|   101 | Peter   |     32 | NewYork    |    200000 |
+|   102 | Mark    |     32 | California |    300000 |
+|   103 | Donald  |     40 | Arizone    |   1000000 |
+|   104 | Obama   |     35 | Florida    |   5000000 |
+|   105 | Linklon |     32 | Georgia    |    250000 |
++-------+---------+--------+------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select empName,empCity,empIncome from employees where empId in (select empId from employees);
++---------+------------+-----------+
+| empName | empCity    | empIncome |
++---------+------------+-----------+
+| Peter   | NewYork    |    200000 |
+| Mark    | California |    300000 |
+| Donald  | Arizone    |   1000000 |
+| Obama   | Florida    |   5000000 |
+| Linklon | Georgia    |    250000 |
++---------+------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employees where empId in (select empId from employees where empIncome > 350000);
++-------+---------+--------+---------+-----------+
+| empId | empName | empAge | empCity | empIncome |
++-------+---------+--------+---------+-----------+
+|   103 | Donald  |     40 | Arizone |   1000000 |
+|   104 | Obama   |     35 | Florida |   5000000 |
++-------+---------+--------+---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select empName,empCity,empIncome from employees where empIncome=(select max(empIncome) from employees);
++---------+---------+-----------+
+| empName | empCity | empIncome |
++---------+---------+-----------+
+| Obama   | Florida |   5000000 |
++---------+---------+-----------+
+1 row in set (0.02 sec)
