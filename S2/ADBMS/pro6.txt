@@ -1,0 +1,142 @@
+mysql> create table salesman(sId INT,sName varchar(50),sCity varchar(50),sCommission decimal);
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> desc salesman;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| sId         | int(11)       | YES  |     | NULL    |       |
+| sName       | varchar(50)   | YES  |     | NULL    |       |
+| sCity       | varchar(50)   | YES  |     | NULL    |       |
+| sCommission | decimal(10,0) | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> insert into salesman values(5001,"James Hoong","New York",0.15),(5002,"Nail Knite","Paris",0.13),(5005,"Pit Alex","London",0.11),(5006,"Mc Lyon","Paris",0.14);
+Query OK, 4 rows affected, 4 warnings (0.10 sec)
+Records: 4  Duplicates: 0  Warnings: 4
+
+mysql> select * from salesman;
++------+-------------+----------+-------------+
+| sId  | sName       | sCity    | sCommission |
++------+-------------+----------+-------------+
+| 5001 | James Hoong | New York |        0.15 |
+| 5002 | Nail Knite  | Paris    |        0.13 |
+| 5005 | Pit Alex    | London   |        0.11 |
+| 5006 | Mc Lyon     | Paris    |        0.14 |
++------+-------------+----------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> mysql> create view newYorkStaff as select * from salesman where New York";
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from newYorkStaff;
++------+-------------+----------+-------------+
+| sId  | sName       | sCity    | sCommission |
++------+-------------+----------+-------------+
+| 5001 | James Hoong | New York |        0.15 |
++------+-------------+----------+-------------+
+1 row in set (0.02 sec)
+
+mysql> create table customer(cId int,cName varchar(50),cCity varchar(50),cGrade int,sId int);
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> insert into customer values(3002,"Nick Rimando","New York",100,5001),(3007,"Brad Davis","New York",200,5001),(3005,"Graham Zusi","California",200,5002),(3008,"Julian Green","California",200,5002);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from customer;
++------+--------------+------------+--------+------+
+| cId  | cName        | cCity      | cGrade | sId  |
++------+--------------+------------+--------+------+
+| 3002 | Nick Rimando | New York   |    100 | 5001 |
+| 3007 | Brad Davis   | New York   |    200 | 5001 |
+| 3005 | Graham Zusi  | California |    200 | 5002 |
+| 3008 | Julian Green | California |    200 | 5002 |
++------+--------------+------------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql> alter table customer add foreign key(sId) references salesman(sId);
+Query OK, 4 rows affected (0.68 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> desc customer;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| cId    | int(11)     | NO   | PRI | NULL    |       |
+| cName  | varchar(50) | YES  |     | NULL    |       |
+| cCity  | varchar(50) | YES  |     | NULL    |       |
+| cGrade | int(11)     | YES  |     | NULL    |       |
+| sId    | int(11)     | YES  | MUL | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create view gradecount(cGrade,number) as select cGrade,count(*) from customer group by cGrade;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select * from gradecount;
++--------+--------+
+| cGrade | number |
++--------+--------+
+|    100 |      1 |
+|    200 |      3 |
++--------+--------+
+2 rows in set (0.02 sec)
+
+mysql> create table orders (ordId int,punch_amt float,ord_date date,cId int,sId int);
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> alter table orders add foreign key(sId) references salesman(sId);
+Query OK, 0 rows affected (1.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table orders add foreign key(cId) references customer(cId);
+Query OK, 0 rows affected (0.61 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table orders add primary key(ordId);
+Query OK, 0 rows affected (0.69 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into orders values(7001,150.5,'2012-10-05',3005,5002),(70009,270.65,'2012-09-10',3002,5001),(70002,65.26,'2012-10-05',3002,5001),(7004,110.5,'2012-08-17',3008,5002);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> create view totalForDay as select ord_date,count(Distinct cId),AVG(punch_amt),sum(punch_amt) from orders group by ord_date;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select * from totalForDay;
++------------+---------------------+--------------------+--------------------+
+| ord_date   | count(Distinct cId) | AVG(punch_amt)     | sum(punch_amt)     |
++------------+---------------------+--------------------+--------------------+
+| 2012-08-17 |                   1 |              110.5 |              110.5 |
+| 2012-09-10 |                   1 |  270.6499938964844 |  270.6499938964844 |
+| 2012-10-05 |                   2 | 107.88000106811523 | 215.76000213623047 |
++------------+---------------------+--------------------+--------------------+
+3 rows in set (0.02 sec)
+
+mysql> create view sorder as select sId,ordId,cId from orders where ord_date in('2012-08-17','2012-09-10');
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from sorder;
++------+-------+------+
+| sId  | ordId | cId  |
++------+-------+------+
+| 5002 |  7004 | 3008 |
+| 5001 | 70009 | 3002 |
++------+-------+------+
+2 rows in set (0.02 sec)
+
+mysql> create view elitsalesmans as select b.ord_date,a.sId,a.sName from salesman a,orders b where a.sId=b.sId and b.punch_amt=(select max(punch_amt) from orders c where c.ord_date=b.ord_date);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from elitsalesmans;
++------------+------+-------------+
+| ord_date   | sId  | sName       |
++------------+------+-------------+
+| 2012-10-05 | 5002 | Nail Knite  |
+| 2012-08-17 | 5002 | Nail Knite  |
+| 2012-09-10 | 5001 | James Hoong |
++------------+------+-------------+
+3 rows in set (0.00 sec)
