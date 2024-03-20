@@ -19,7 +19,7 @@ class Sports extends Student{
     }
 }
 class Result extends Sports{
-    Result(String name,int age,String course){
+    Result(String name,int age,String course,float mark,int sports_score){
         super(name,age,course,mark,sports_score);
     }
     void disp(){
@@ -30,7 +30,7 @@ class Result extends Sports{
         System.out.println("Sports Score : "+sports_score);
     }
 }
-public class Pro14{
+class Pro14{
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in).useDelimiter("\n");
         System.out.println("Enter the details of Student : ");
@@ -40,22 +40,11 @@ public class Pro14{
         int age = scn.nextInt();
         System.out.print("Course : ");
         String course = scn.next();
-        //System.out.print("Mark : ");
-        //int mark = scn.nextInt();
-        //System.out.print("Sports Score : ");
-        //int sp_score = scn.nextInt();
-        System.out.println("Maths mark[50] : ");
-        int data1 = scn.nextInt();
-        System.out.println("English mark[50] : ");
-        int data2 = scn.nextInt();
-        System.out.println("Science mark[50] : ");
-        int data3 = scn.nextInt();
-        System.out.println("--------Sports-------");
-        System.out.println("100mtr Running : ");
-        int data4 = scn.nextInt();
-        System.out.println("ShotPut : ");
-        int data5 = scn.nextInt();
-        Result stud1 = new Result(name,age,course,data1,data2,data3,data4,data5);
+        System.out.print("Mark : ");
+        int mark = scn.nextInt();
+        System.out.print("Sports Score : ");
+        int sp_score = scn.nextInt();
+        Result stud1 = new Result(name,age,course,mark,sp_score);
         System.out.println("\nStudent Report : ");
         stud1.disp();
     }
