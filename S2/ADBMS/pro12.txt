@@ -1,0 +1,31 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> delimiter //
+mysql> create procedure Factorial(in a int)
+    -> begin
+    -> declare f int default 1;
+    -> while a > 0 do
+    -> set f=f * a;
+    -> set a=a - 1;
+    -> end while;
+    -> select concat('Factorial= ',f) as result;
+    -> end 
+    -> //
+Query OK, 0 rows affected (1.19 sec)
+
+mysql> delimiter ;
+mysql> call Factorial(6);
++----------------+
+| result         |
++----------------+
+| Factorial= 720 |
++----------------+
+1 row in set (0.21 sec)
+
+Query OK, 0 rows affected (0.21 sec)
+
+mysql> 
+
