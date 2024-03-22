@@ -1,0 +1,25 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> delimiter //
+mysql> create procedure `sum`(in a int,in b int)
+    -> begin
+    -> declare c int;
+    -> set c=a+b;
+    -> select concat('Sum of two numbers=',c) as result;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> call `sum`(5,10);
++-----------------------+
+| result                |
++-----------------------+
+| Sum of two numbers=15 |
++-----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
