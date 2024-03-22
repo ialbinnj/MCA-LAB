@@ -1,0 +1,29 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+mysql> delimiter //
+mysql> create procedure displayF()
+    -> begin
+    -> select * from student;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delimiter ;
+mysql> call displayF();
++--------+------+--------+
+| rollno | name | course |
++--------+------+--------+
+|      1 | Ammu | MCA    |
+|      2 | Amal | MCA    |
+|      3 | Anet | MCA    |
+|      5 | Arun | MCA    |
++--------+------+--------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
