@@ -1,0 +1,32 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> delimiter //
+mysql> create procedure maxOfThree(in a int,in b int,in c int)
+    -> begin
+    -> if a > b and a > c then
+    -> select concat(a,' is Largest number') as result;
+    -> elseif b > c and b > a then
+    -> select concat(b,' is Largest number') as result;
+    -> else
+    -> select concat(c,' is Largest number') as result;
+    -> end if;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> delimiter ;
+mysql> call maxOfThree(2,7,10);
++----------------------+
+| result               |
++----------------------+
+| 10 is Largest number |
++----------------------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> 
+
