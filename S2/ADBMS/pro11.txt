@@ -1,0 +1,30 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> delimiter //
+mysql> create procedure checkOddOrEven(in inputNum int)
+    -> begin
+    -> if mod(inputNum,2) = 0 then
+    -> select 'Even' as result;
+    -> else
+    -> select 'Odd' as result;
+    -> end if;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> call checkOddOrEven(2);
++--------+
+| result |
++--------+
+| Even   |
++--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+
