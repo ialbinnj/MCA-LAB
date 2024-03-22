@@ -1,0 +1,34 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> delimiter //
+mysql> create procedure sumOfDigit(in num int)
+    -> begin declare sum int default 0;
+    -> declare a int;
+    -> declare digit int;
+    -> set a = num;
+    -> while a > 0 do
+    -> set digit = a % 10;
+    -> set sum = sum + digit;
+    -> set a = a/10;
+    -> end while;
+    -> select concat('Sum is: ',sum) as result;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> delimiter ;
+mysql> call sumOfDigit(124);
++-----------+
+| result    |
++-----------+
+| Sum is: 7 |
++-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+
