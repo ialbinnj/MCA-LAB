@@ -1,0 +1,82 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+mysql> create table students(
+    -> id int not null auto_increment,
+    -> name varchar(45) not null,
+    -> class int not null,
+    -> emailId varchar(65) not null,
+    -> primary key(id)
+    -> );
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> insert into students(name,class,emailId)
+    -> values ('Stephen',6,'stephen@gmail.com'),
+    -> ('bob',7,'bob@gmail.com'),
+    -> ('Steven',8,'steven@gmail.com'),
+    -> ('Alexandar',7,'alexandar@gmail.com');
+Query OK, 4 rows affected (0.06 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> create table studLog(
+    -> user varchar(45) not null,
+    -> description varchar(65) not null
+    -> );
+Query OK, 0 rows affected (0.36 sec)
+
+mysql> select * from students;
++----+-----------+-------+---------------------+
+| id | name      | class | emailId             |
++----+-----------+-------+---------------------+
+|  1 | Stephen   |     6 | stephen@gmail.com   |
+|  2 | bob       |     7 | bob@gmail.com       |
+|  3 | Steven    |     8 | steven@gmail.com    |
+|  4 | Alexandar |     7 | alexandar@gmail.com |
++----+-----------+-------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create trigger after_update_std
+    -> after update
+    -> on students
+    -> for each row
+    -> begin
+    -> insert into studLog values( user(),
+    -> concat ('Update Student Record',OLD.name,'Previous Class:',
+    -> OLD.class,'Present Class',New.class));
+    -> end //
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> delimiter ;
+mysql> select * from studLog;
+Empty set (0.00 sec)
+
+mysql> update students set class=class+1;
+Query OK, 4 rows affected (0.11 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> select * from studLog;
++----------------+--------------------------------------------------------------+
+| user           | description                                                  |
++----------------+--------------------------------------------------------------+
+| root@localhost | Update Student RecordStephenPrevious Class:6Present Class7   |
+| root@localhost | Update Student RecordbobPrevious Class:7Present Class8       |
+| root@localhost | Update Student RecordStevenPrevious Class:8Present Class9    |
+| root@localhost | Update Student RecordAlexandarPrevious Class:7Present Class8 |
++----------------+--------------------------------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from students;
++----+-----------+-------+---------------------+
+| id | name      | class | emailId             |
++----+-----------+-------+---------------------+
+|  1 | Stephen   |     7 | stephen@gmail.com   |
+|  2 | bob       |     8 | bob@gmail.com       |
+|  3 | Steven    |     9 | steven@gmail.com    |
+|  4 | Alexandar |     8 | alexandar@gmail.com |
++----+-----------+-------+---------------------+
+4 rows in set (0.00 sec)
+
