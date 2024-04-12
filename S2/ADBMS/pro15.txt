@@ -1,0 +1,84 @@
+mysql> use albindb;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+mysql> create table empl (
+    -> empId int primary key,
+    -> fName varchar(50),
+    -> lName varchar(50),
+    -> salary decimal(10,2)
+    -> );
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> create table auditLog (
+    -> logId int primary key auto_increment,
+    -> action varchar(255),
+    -> timestamps timestamp default current_timestamp
+    -> );
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> insert into empl values (1,'John','Doe',50000.00),(2,'Jane','Smith',60000.00),(3,'Michael','Johnsin',55000.00);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into auditLog (action,timestamps)
+    -> values
+    -> ('New Employee added',current_timestamp);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from empl;
++-------+---------+---------+----------+
+| empId | fName   | lName   | salary   |
++-------+---------+---------+----------+
+|     1 | John    | Doe     | 50000.00 |
+|     2 | Jane    | Smith   | 60000.00 |
+|     3 | Michael | Johnsin | 55000.00 |
++-------+---------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from auditLog;
++-------+--------------------+---------------------+
+| logId | action             | timestamps          |
++-------+--------------------+---------------------+
+|     1 | New Employee added | 2024-04-05 11:12:02 |
++-------+--------------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create trigger after_Emp_Insert
+    -> after insert on empl
+    -> for each row
+    -> begin
+    -> insert into auditLog(action,timestamps)
+    -> values ('New Employee inserted',now());
+    -> end 
+    -> //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> delimiter ;
+mysql> insert into empl(empId,fName,lName,salary)
+    -> values(4,'Minnu','Joseph',65000.00);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from empl;
++-------+---------+---------+----------+
+| empId | fName   | lName   | salary   |
++-------+---------+---------+----------+
+|     1 | John    | Doe     | 50000.00 |
+|     2 | Jane    | Smith   | 60000.00 |
+|     3 | Michael | Johnsin | 55000.00 |
+|     4 | Minnu   | Joseph  | 65000.00 |
++-------+---------+---------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from auditLog;
++-------+-----------------------+---------------------+
+| logId | action                | timestamps          |
++-------+-----------------------+---------------------+
+|     1 | New Employee added    | 2024-04-05 11:12:02 |
+|     2 | New Employee inserted | 2024-04-05 11:18:09 |
++-------+-----------------------+---------------------+
+2 rows in set (0.00 sec)
+
