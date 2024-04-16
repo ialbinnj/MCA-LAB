@@ -1,0 +1,90 @@
+> use ProductCatalog
+switched to db ProductCatalog
+
+> db.createCollection("Products")
+{ "ok" : 1 }
+
+> db.Products.insertMany([{ "ProductID": 1, "ProductName": "Laptop", "Price": 1000, "Quantity": 20 },{ "ProductID": 2, "ProductName": "Smartphone", "Price": 500, "Quantity": 30},{ "ProductID": 3, "ProductName": "Tv", "Price": 350, "Quantity": 10 },{ "ProductID": 4, "ProductName": "AC", "Price": 1200, "Quantity": 25 },{ "ProductID": 5, "ProductName": "Fridge", "Price": 1500, "Quantity": 40 }])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("661503063fab4a16c69da487"),
+		ObjectId("661503063fab4a16c69da488"),
+		ObjectId("661503063fab4a16c69da489"),
+		ObjectId("661503063fab4a16c69da48a"),
+		ObjectId("661503063fab4a16c69da48b")
+	]
+}
+
+> db.Products.find().pretty()
+{
+	"_id" : ObjectId("661503063fab4a16c69da487"),
+	"ProductID" : 1,
+	"ProductName" : "Laptop",
+	"Price" : 1000,
+	"Quantity" : 20
+}
+{
+	"_id" : ObjectId("661503063fab4a16c69da488"),
+	"ProductID" : 2,
+	"ProductName" : "Smartphone",
+	"Price" : 500,
+	"Quantity" : 30
+}
+{
+	"_id" : ObjectId("661503063fab4a16c69da489"),
+	"ProductID" : 3,
+	"ProductName" : "Tv",
+	"Price" : 350,
+	"Quantity" : 10
+}
+{
+	"_id" : ObjectId("661503063fab4a16c69da48a"),
+	"ProductID" : 4,
+	"ProductName" : "AC",
+	"Price" : 1200,
+	"Quantity" : 25
+}
+{
+	"_id" : ObjectId("661503063fab4a16c69da48b"),
+	"ProductID" : 5,
+	"ProductName" : "Fridge",
+	"Price" : 1500,
+	"Quantity" : 40
+}
+
+> db.Products.updateOne({ "ProductName": "Laptop" },{ $inc: { "Quantity": 10 } })
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.Products.deleteOne({ "ProductName": "Smartphone" })
+{ "acknowledged" : true, "deletedCount" : 1 }
+
+> db.Products.find().pretty()
+{
+	"_id" : ObjectId("661503063fab4a16c69da487"),
+	"ProductID" : 1,
+	"ProductName" : "Laptop",
+	"Price" : 1000,
+	"Quantity" : 30
+}
+{
+	"_id" : ObjectId("661503063fab4a16c69da489"),
+	"ProductID" : 3,
+	"ProductName" : "Tv",
+	"Price" : 350,
+	"Quantity" : 10
+}
+{
+	"_id" : ObjectId("661503063fab4a16c69da48a"),
+	"ProductID" : 4,
+	"ProductName" : "AC",
+	"Price" : 1200,
+	"Quantity" : 25
+}
+{
+	"_id" : ObjectId("661503063fab4a16c69da48b"),
+	"ProductID" : 5,
+	"ProductName" : "Fridge",
+	"Price" : 1500,
+	"Quantity" : 40
+}
