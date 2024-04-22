@@ -1,0 +1,214 @@
+db.students.insert({name:"Tony",age:17,id:1,sec:"A",subject:["physics","maths"]})
+WriteResult({ "nInserted" : 1 })
+
+> db.students.insertMany([{name:"steve",age:37,id:2,sec:"A"},{name:"natasha",age:17,id:3,sec:"B",subject:["physics","english"]},{name:"bruce",age:21,id:4,sec:"B",subject:["physics","maths","biology","Chemistry"]},{name:"nick",age:40,id:5,sec:"B",subject:["english"]},{name:"groot",age:4,id:6,sec:"A",subject:["english"]},{name:"thanos",age:50,id:7,sec:"A",subject:["maths","physics","chemistry"]}])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("6618c9ca810aebbc455269c0"),
+		ObjectId("6618c9ca810aebbc455269c1"),
+		ObjectId("6618c9ca810aebbc455269c2"),
+		ObjectId("6618c9ca810aebbc455269c3"),
+		ObjectId("6618c9ca810aebbc455269c4"),
+		ObjectId("6618c9ca810aebbc455269c5")
+	]
+}
+
+> db.students.find().pretty()
+{
+	"_id" : ObjectId("6618c5c2810aebbc455269ba"),
+	"name" : "Tony",
+	"age" : 17,
+	"id" : 1,
+	"sec" : "A",
+	"subject" : [
+		"physics",
+		"maths"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c0"),
+	"name" : "steve",
+	"age" : 37,
+	"id" : 2,
+	"sec" : "A"
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c1"),
+	"name" : "natasha",
+	"age" : 17,
+	"id" : 3,
+	"sec" : "B",
+	"subject" : [
+		"physics",
+		"english"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c2"),
+	"name" : "bruce",
+	"age" : 21,
+	"id" : 4,
+	"sec" : "B",
+	"subject" : [
+		"physics",
+		"maths",
+		"biology",
+		"Chemistry"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c3"),
+	"name" : "nick",
+	"age" : 40,
+	"id" : 5,
+	"sec" : "B",
+	"subject" : [
+		"english"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c4"),
+	"name" : "groot",
+	"age" : 4,
+	"id" : 6,
+	"sec" : "A",
+	"subject" : [
+		"english"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c5"),
+	"name" : "thanos",
+	"age" : 50,
+	"id" : 7,
+	"sec" : "A",
+	"subject" : [
+		"maths",
+		"physics",
+		"chemistry"
+	]
+}
+
+> db.students.aggregate([{$match:{sec:"B"}},{$count:"Total student in sec:B"}])
+{ "Total student in sec:B" : 3 }
+
+> db.students.aggregate([{$group:{_id : "$sec", total_st : {$sum:1}, max_age : {$max:"$age"}}}])
+{ "_id" : "B", "total_st" : 3, "max_age" : 40 }
+{ "_id" : "A", "total_st" : 4, "max_age" : 50 }
+
+> db.students.aggregate([{$match:{age:{$gt:30}}}]).pretty()
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c0"),
+	"name" : "steve",
+	"age" : 37,
+	"id" : 2,
+	"sec" : "A"
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c3"),
+	"name" : "nick",
+	"age" : 40,
+	"id" : 5,
+	"sec" : "B",
+	"subject" : [
+		"english"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c5"),
+	"name" : "thanos",
+	"age" : 50,
+	"id" : 7,
+	"sec" : "A",
+	"subject" : [
+		"maths",
+		"physics",
+		"chemistry"
+	]
+}
+
+> db.students.aggregate([{'$sort':{'age':1}}]).pretty()
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c4"),
+	"name" : "groot",
+	"age" : 4,
+	"id" : 6,
+	"sec" : "A",
+	"subject" : [
+		"english"
+	]
+}
+{
+	"_id" : ObjectId("6618c5c2810aebbc455269ba"),
+	"name" : "Tony",
+	"age" : 17,
+	"id" : 1,
+	"sec" : "A",
+	"subject" : [
+		"physics",
+		"maths"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c1"),
+	"name" : "natasha",
+	"age" : 17,
+	"id" : 3,
+	"sec" : "B",
+	"subject" : [
+		"physics",
+		"english"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c2"),
+	"name" : "bruce",
+	"age" : 21,
+	"id" : 4,
+	"sec" : "B",
+	"subject" : [
+		"physics",
+		"maths",
+		"biology",
+		"Chemistry"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c0"),
+	"name" : "steve",
+	"age" : 37,
+	"id" : 2,
+	"sec" : "A"
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c3"),
+	"name" : "nick",
+	"age" : 40,
+	"id" : 5,
+	"sec" : "B",
+	"subject" : [
+		"english"
+	]
+}
+{
+	"_id" : ObjectId("6618c9ca810aebbc455269c5"),
+	"name" : "thanos",
+	"age" : 50,
+	"id" : 7,
+	"sec" : "A",
+	"subject" : [
+		"maths",
+		"physics",
+		"chemistry"
+	]
+}
+
+> db.students.count()
+7
+
+> db.students.distinct("name")
+[ "Tony", "steve", "natasha", "bruce", "nick", "groot", "thanos" ]
+
+> db.students.distinct("age")
+[ 17, 37, 21, 40, 4, 50 ]
