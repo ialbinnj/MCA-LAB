@@ -1,0 +1,35 @@
+> db.createUser({user:"admin",pwd:"admin123",roles:["readWrite","dbAdmin"]});
+Successfully added user: { "user" : "admin", "roles" : [ "readWrite", "dbAdmin" ] }
+
+> db.createUser({user:"developer",pwd:"dev123",roles:["readWrite"]});
+Successfully added user: { "user" : "developer", "roles" : [ "readWrite" ] }
+
+> show users
+{
+	"_id" : "AKASHDB.admin",
+	"userId" : BinData(4,"G/cen4LnTL2z6FELcIvb3Q=="),
+	"user" : "admin",
+	"db" : "AKASHDB",
+	"roles" : [
+		{
+			"role" : "readWrite",
+			"db" : "AKASHDB"
+		},
+		{
+			"role" : "dbAdmin",
+			"db" : "AKASHDB"
+		}
+	]
+}
+{
+	"_id" : "AKASHDB.developer",
+	"userId" : BinData(4,"2RGeXdHSSi6S4ViDR8zVgA=="),
+	"user" : "developer",
+	"db" : "AKASHDB",
+	"roles" : [
+		{
+			"role" : "readWrite",
+			"db" : "AKASHDB"
+		}
+	]
+}
