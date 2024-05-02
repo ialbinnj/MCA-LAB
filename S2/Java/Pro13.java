@@ -1,84 +1,67 @@
 import java.util.Scanner;
-class Publisher{
-    String pub_name;
-    Publisher(String pub_name){
-        this.pub_name = pub_name;
+
+interface Calc {
+    void area();
+    void perimeter();
+}
+
+class Circle implements Calc {
+    double pi = 3.14;
+    @Override
+    public void area() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter Radius for area: ");
+        int radius = input.nextInt();
+        System.out.println("Area of Circle is: " + (pi * radius * radius));
+    }
+    public void perimeter() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter Radius for perimeter: ");
+        int radius = input.nextInt();
+        System.out.println("Perimeter of Circle is: " + (2 * pi * radius));
     }
 }
-class Book extends Publisher{
-    String book_name;
-    String author;
-    float price;
-    Book(String pub_name,String book_name,String author,float price){
-        super(pub_name);
-        this.book_name = book_name;
-        this.author = author;
-        this.price = price;
+
+class Rectangle implements Calc {
+    @Override
+    public void area() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter Length for area: ");
+        int len = input.nextInt();
+        System.out.println("Enter Breadth for area: ");
+        int bre = input.nextInt();
+        System.out.println("Area of Rectangle is: " + (len * bre));
+    }
+    public void perimeter() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter Length for perimeter: ");
+        int len = input.nextInt();
+        System.out.println("Enter Breadth for perimeter: ");
+        int bre = input.nextInt();
+        System.out.println("Perimeter of Rectangle is: " + (2 * (len + bre)));
     }
 }
-class Literature extends Book{
-    Literature(String pub_name,String book_name,String author,float price){
-        super(pub_name,book_name,author,price);
-    }
-    void disp(){
-        System.out.println("Publisher Name : "+pub_name);
-        System.out.println("Book Name : "+book_name);
-        System.out.println("Author : "+author);
-        System.out.println("Price : "+price);
-    }
-}
-class Fiction extends Book{
-    Fiction(String pub_name,String book_name,String author,float price){
-        super(pub_name,book_name,author,price);
-    }
-    void disp(){
-        System.out.println("Publisher Name : "+pub_name);
-        System.out.println("Book Name : "+book_name);
-        System.out.println("Author : "+author);
-        System.out.println("Price : "+price);
-    }
-}
+
 public class Pro13 {
-    static String t1,t2,t3;
-    static float t4;
-    static Scanner scn = new Scanner(System.in);
-    static void read(){
-        System.out.print("Publisher Name : ");
-        t1 = scn.next();
-        System.out.print("Book Name : ");
-        t2 = scn.next();
-        System.out.print("Author : ");
-        t3 = scn.next();
-        System.out.print("Price : ");
-        t4 = scn.nextFloat();
-    }
-    public static void main(String args[]){
-        int i;
-        Literature lit[] = new Literature[10];
-        Fiction fic[] = new Fiction[10];
-        System.out.print("Enter the no. of Literature Books : ");
-        int n = scn.nextInt();
-        for(i=0;i<n;i++){
-            System.out.println("\nEnter the Details of Book "+(i+1));
-            read();
-            lit[i] = new Literature(t1,t2,t3,t4);
-        }
-        System.out.print("Enter the no. of Fiction Books : ");
-        int m = scn.nextInt();
-        for(i=0;i<m;i++){
-            System.out.println("\nEnter the Details of Book "+(i+1));
-            read();
-            fic[i] = new Fiction(t1,t2,t3,t4);
-        }
-        System.out.println("\nDetails of Literature Books ");
-        for(i=0;i<n;i++){
-            System.out.println("\nBook "+(i+1));
-            lit[i].disp();
-        }
-        System.out.println("\nDetails of Fiction Books ");
-        for(i=0;i<m;i++){
-            System.out.println("\nBook "+(i+1));
-            fic[i].disp();
-        }
+    public static void main(String args[]) {
+        Scanner input = new Scanner(System.in);
+        Circle Cobj = new Circle();
+        Rectangle Robj = new Rectangle();
+        int ch;
+        do {
+            System.out.println("1. Circle\n2. Rectangle\n3. Exit\n");
+            System.out.print("Enter Choice: ");
+            ch = input.nextInt();
+            switch (ch) {
+                case 1:
+                    Cobj.area();
+                    Cobj.perimeter();
+                    break;
+                case 2:
+                    Robj.area();
+                    Robj.perimeter();
+                    break;
+            }
+        } while (ch != 3);
     }
 }
