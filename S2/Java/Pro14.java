@@ -1,51 +1,88 @@
-import java.util.Scanner;
-class Student{
-    String name;
-    int age;
-    String course;
-    float mark;
-    Student(String name,int age,String course,float mark){
-        this.name = name;
-        this.age = age;
-        this.course = course;
-        this.mark = mark;
-    }
+import java.util.*;
+import java.text.*;
+
+interface Calculation{
+	void total();
 }
-class Sports extends Student{
-    int sports_score;
-    Sports(String name,int age,String course,float mark,int sports_score){
-        super(name,age,course,mark);
-        this.sports_score = sports_score;
-    }
+
+class Order implements Calculation{
+	int P_id, quantity;
+	String Name;
+	float price,total;
+	public Order( int p_id, String n, int q, float p) {
+		
+		P_id = p_id;
+		Name = n;
+		quantity = q;
+		price = p;
+	}
+	
+	@Override
+	public void total() {
+		total = 0 + (quantity * price);
+	}
+	
+	public void Display() {
+		
+		 System.out.println(P_id+"\t\t\t"+Name+"\t\t\t"+quantity+"\t\t\t"+price+"\t\t\t"+total);
+		 System.out.println("");
+	}
 }
-class Result extends Sports{
-    Result(String name,int age,String course,float mark,int sports_score){
-        super(name,age,course,mark,sports_score);
-    }
-    void disp(){
-        System.out.println("Name : "+name);
-        System.out.println("Age : "+age);
-        System.out.println("Course : "+course);
-        System.out.println("Mark : "+mark);
-        System.out.println("Sports Score : "+sports_score);
-    }
-}
-class Pro14{
-    public static void main(String[] args) {
-        Scanner scn = new Scanner(System.in).useDelimiter("\n");
-        System.out.println("Enter the details of Student : ");
-        System.out.print("Name : ");
-        String name = scn.next();
-        System.out.print("Age : ");
-        int age = scn.nextInt();
-        System.out.print("Course : ");
-        String course = scn.next();
-        System.out.print("Mark : ");
-        int mark = scn.nextInt();
-        System.out.print("Sports Score : ");
-        int sp_score = scn.nextInt();
-        Result stud1 = new Result(name,age,course,mark,sp_score);
-        System.out.println("\nStudent Report : ");
-        stud1.disp();
-    }
+
+public class Pro16 {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n, P_id, quant, rand;
+		String P_name;
+		float price,net_amt=0;
+		double N;
+		 N = Math.random() *1000000;
+	        rand = (int) N;
+	        
+	    DateFormat df=new SimpleDateFormat("dd/MM/yyyy");
+	    Date d= new Date();
+	    System.out.println("\t\t\tSHOPPING CART");
+		System.out.println("\nEnter the number of products to be added:");
+        n = sc.nextInt();
+        
+        Order  O[] = new Order[n];
+        for ( int i = 0; i<n; i++)
+          {
+        	System.out.println("\nItem No:"+(i+1));
+        	
+        	System.out.print("\nEnter the Product ID:");
+        	P_id = sc.nextInt();
+        	
+        	System.out.print("\nEnter the Product Name:");
+        	P_name = sc.next();
+        	
+        	System.out.print("\nEnter the quantity:");
+        	quant = sc.nextInt();
+        	
+        	System.out.print("\nEnter the unit price:");
+        	price = sc.nextFloat();
+        	
+            O[i] = new Order(P_id,P_name,quant,price);
+            O[i].total();
+            
+          }
+        
+        System.out.println("\n\n\t\t\t\t\t\tINVOICE GENERATED");
+        System.out.println("Order no. #"+rand);
+        System.out.println("Date: "+df.format(d));
+        
+        
+        System.out.println("\nProduct Id\t\tName\t\tQuantity\t\t\tprice\t\t\tTotal");
+		System.out.println("");
+        
+        for ( int i = 0; i<n; i++)
+        {
+           O[i].Display();
+           net_amt += O[i].total;
+		
+        }
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\tNet. Amount\t"+ net_amt);
+	}
+
 }
