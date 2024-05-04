@@ -1,39 +1,53 @@
-import java.util.*;
+import java.util.Scanner;
 
-class CheckException extends Exception{
-   public CheckException(String input){
-      super(input);
-   }
+class Fibonacci implements Runnable{
+    int n;
+    Fibonacci(int n){
+        this.n = n;
+    }
+    public void run(){
+        int a=0,b=1,temp;
+        for(int i=0;i<this.n;i++){
+            try{
+                System.out.println("Fibonacci Series : "+a);
+                Thread.sleep(1000);
+            }catch(Exception e){}
+            temp = b;
+            b=a+b;
+            a=temp;
+        }
+    }
 }
 
-public class Pro20 {
-    public static void main(String[] args) {
-        double sum = 0;
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Count of numbers");
-        int N = sc.nextInt();
-        int count=0;
-        int[] numbers = new int[N];
-        for(int i =0;i<N; i++){
-            System.out.println("Enter the number");
-            numbers[i] = sc.nextInt();
-        }
-        for(int i =0;i<N; i++){
-            try {
-                if (numbers[i] >= 0) {
-                    sum += numbers[i];
-                    count+=1;
-                } else {
-                    throw new CheckException("Negative number : " +numbers[i]);
-                }
-            }
-            catch (CheckException e){
-                System.out.println(e.getMessage());
-            }
-        }
-        double avg = sum/count;
-        System.out.println("Average of Positive Numbers ="+avg);
-
+class Even implements Runnable{
+    int n;
+    Even(int n){
+        this.n = n;
     }
+    public void run(){
+        for(int i=1;i<=this.n;i++){
+            if(i%2==0){
+                try{
+                    System.out.println(i+" is an Even Number");
+                    Thread.sleep(1000);
+                }catch(Exception e){}
+            }
+        }
+    }
+}
 
+public class Pro22 {
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+        System.out.print("Enter the limit of Fibonacci number : ");
+        int n = scn.nextInt();
+        System.out.print("Enter the limit of Even Numbers : ");
+        int m = scn.nextInt();
+        Fibonacci fib = new Fibonacci(n);
+        Even evn = new Even(m);
+        Thread thread1 = new Thread(fib);
+        Thread thread2 = new Thread(evn);
+        thread1.start();
+        thread2.start();
+    }
 }
