@@ -36,7 +36,7 @@ class Even implements Runnable{
     }
 }
 
-public class Pro22 {
+public class Pro20 {
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
         System.out.print("Enter the limit of Fibonacci number : ");
