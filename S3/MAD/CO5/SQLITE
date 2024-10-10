@@ -1,0 +1,229 @@
+activity_main.xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter ID" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name" />
+
+    <Button
+        android:id="@+id/btnInsert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Insert" />
+
+    <Button
+        android:id="@+id/btnSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select" />
+
+    <Button
+        android:id="@+id/btnDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Display Users" />
+
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete" />
+
+    <TextView
+        android:id="@+id/textViewResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp" />
+</LinearLayout>
+
+MainActiviy.java
+
+package com.example.myapplication;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.support.v7.app.AppCompatActivity;
+
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    private UserRepository userRepository;
+    private EditText editTextId, editTextName;
+    private TextView textViewResults;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        userRepository = new UserRepository(this);
+        editTextId = findViewById(R.id.editTextId);
+        editTextName = findViewById(R.id.editTextName);
+        textViewResults = findViewById(R.id.textViewResults);
+
+        Button btnInsert = findViewById(R.id.btnInsert);
+        Button btnSelect = findViewById(R.id.btnSelect);
+        Button btnDisplay = findViewById(R.id.btnDisplay);
+        Button btnUpdate = findViewById(R.id.btnUpdate);
+        Button btnDelete = findViewById(R.id.btnDelete);
+
+        btnInsert.setOnClickListener(v -> {
+            int id = Integer.parseInt(editTextId.getText().toString());
+            String name = editTextName.getText().toString();
+            userRepository.insertUser(id, name);
+            editTextId.setText("");
+            editTextName.setText("");
+            textViewResults.setText("User inserted.");
+        });
+
+        btnSelect.setOnClickListener(v -> {
+            List<String> users = userRepository.getAllUsers();
+            textViewResults.setText(String.join("\n", users));
+        });
+
+        btnDisplay.setOnClickListener(v -> {
+            List<String> users = userRepository.getAllUsers();
+            if (users.isEmpty()) {
+                textViewResults.setText("No users found.");
+            } else {
+                textViewResults.setText(String.join("\n", users));
+            }
+        });
+
+        btnUpdate.setOnClickListener(v -> {
+            int id = Integer.parseInt(editTextId.getText().toString());
+            String newName = editTextName.getText().toString();
+            userRepository.updateUser(id, newName);
+            editTextId.setText("");
+            editTextName.setText("");
+            textViewResults.setText("User updated.");
+        });
+
+        btnDelete.setOnClickListener(v -> {
+            int id = Integer.parseInt(editTextId.getText().toString());
+            userRepository.deleteUser(id);
+            editTextId.setText("");
+            textViewResults.setText("User deleted.");
+        });
+    }
+}
+
+
+DatabaseHelper.java
+
+package com.example.myapplication;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String DATABASE_NAME = "myDatabase.db";
+    private static final int DATABASE_VERSION = 1;
+
+    public static final String TABLE_NAME = "users";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+
+    private static final String TABLE_CREATE =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                    COLUMN_NAME + " TEXT);";
+
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(TABLE_CREATE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
+    }
+}
+
+userrepository.java
+
+package com.example.myapplication;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserRepository {
+    private DatabaseHelper dbHelper;
+
+    public UserRepository(Context context) {
+        dbHelper = new DatabaseHelper(context);
+    }
+
+    // Insert User
+    public void insertUser(int id, String name) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_ID, id);
+        values.put(DatabaseHelper.COLUMN_NAME, name);
+        db.insert(DatabaseHelper.TABLE_NAME, null, values);
+        db.close();
+    }
+
+    // Select All Users
+    public List<String> getAllUsers() {
+        List<String> users = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseHelper.TABLE_NAME, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String user = "ID: " + cursor.getInt(0) + ", Name: " + cursor.getString(1);
+                users.add(user);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return users;
+    }
+
+    // Update User
+    public void updateUser(int id, String newName) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_NAME, newName);
+        db.update(DatabaseHelper.TABLE_NAME, values, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    // Delete User
+    public void deleteUser(int id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+}
